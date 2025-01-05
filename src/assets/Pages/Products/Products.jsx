@@ -1,0 +1,179 @@
+import { useState, useEffect } from "react";
+import {
+  Container,
+  Grid,
+  Card,
+  CardMedia,
+  CardContent,
+  Typography,
+  Button,
+  Box,
+  Rating,
+  Chip,
+  IconButton,
+} from "@mui/material";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import axiosInstance from "../../axiosConfig/axiosConfig";
+
+const theme = {
+  colors: {
+    primary: {
+      main: "#1976d2",
+      dark: "#1565c0",
+      light: "#2196F3",
+    },
+    text: {
+      primary: "#2c3e50",
+      secondary: "#555555",
+    },
+    shadow: "rgba(0,0,0,0.15)",
+  },
+};
+
+export default function Products() {
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    // Fetch products from your API
+    
+    axiosInstance.get("/products")
+      .then((response) => {
+      console.log(response.data.products);
+        setProducts(response.data.products);
+      })
+      .catch((error) => {
+        console.error("Error fetching products:", error);
+      });
+  }, []);
+
+
+
+  return (
+    <Box sx={{ py: 8, bgcolor: "#f8f9fa" }}>
+      <Container>
+        <Typography
+          variant="h3"
+          align="center"
+          gutterBottom
+          sx={{
+            fontWeight: "bold",
+            color: theme.colors.text.primary,
+            mb: 6,
+          }}
+        >
+          Our Collection
+        </Typography>
+
+        <Grid container spacing={4}>
+          {products.map((product) => (
+            <Grid item xs={12} sm={6} md={4} key={product._id}>
+              <Card
+                sx={{
+                  height: "100%",
+                  display: "flex",
+                  flexDirection: "column",
+                  transition: "transform 0.2s",
+                  "&:hover": {
+                    transform: "translateY(-8px)",
+                    boxShadow: `0 12px 25px ${theme.colors.shadow}`,
+                  },
+                }}
+              >
+                <CardMedia
+                  component="img"
+                  height="280"
+                  image={product.image}
+                  alt={product.title}
+                  sx={{ objectFit: "cover" }}
+                />
+
+                <CardContent sx={{ flexGrow: 1 }}>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "flex-start",
+                      mb: 2,
+                    }}
+                  >
+                    <Typography
+                      variant="h6"
+                      sx={{
+                        fontWeight: "bold",
+                        color: theme.colors.text.primary,
+                      }}
+                    >
+                      {product.title}
+                    </Typography>
+                    <Chip
+                      label={product.category}
+                      size="small"
+                      sx={{
+                        bgcolor: theme.colors.primary.light,
+                        color: "white",
+                      }}
+                    />
+                  </Box>
+
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    sx={{ mb: 2 }}
+                  >
+                    {product.description}
+                  </Typography>
+
+                  <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
+                    <Rating value={4.5} precision={0.5} readOnly size="small" />
+                    <Typography
+                      variant="body2"
+                      sx={{ ml: 1, color: theme.colors.text.secondary }}
+                    >
+                      (4.5)
+                    </Typography>
+                  </Box>
+
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Typography
+                      variant="h6"
+                      sx={{
+                        color: theme.colors.primary.main,
+                        fontWeight: "bold",
+                      }}
+                    >
+                      ${product.price}
+                    </Typography>
+                    <Box>
+                      <IconButton size="small" sx={{ mr: 1 }}>
+                        <FavoriteIcon />
+                      </IconButton>
+                      <Button
+                        variant="contained"
+                        startIcon={<ShoppingCartIcon />}
+                        sx={{
+                          bgcolor: theme.colors.primary.main,
+                          "&:hover": {
+                            bgcolor: theme.colors.primary.dark,
+                          },
+                        }}
+                      >
+                        Add to Cart
+                      </Button>
+                    </Box>
+                  </Box>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      </Container>
+    </Box>
+  );
+}
