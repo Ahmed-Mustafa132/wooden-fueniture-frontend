@@ -16,7 +16,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import theme from "../../../Theme/Theme";
-import { useCart } from "../../../context/CartContext";
+import { useCart } from "../../../Context/CartContext";
 
 const CartDrawer = () => {
   const [isOpen, setIsOpen] = useState(false);
