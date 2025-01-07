@@ -18,7 +18,7 @@ import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import VerifiedIcon from "@mui/icons-material/Verified";
 import axiosInstance from "../../axiosConfig/axiosConfig";
 import theme from "../../../Theme/Theme";
-import { useCart } from "../../../context/CartContext";
+import { useCart } from "../../../Context/CartContext";
 
 
 
