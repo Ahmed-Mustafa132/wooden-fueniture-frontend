@@ -1,156 +1,175 @@
-import * as React from "react";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import Menu from "@mui/material/Menu";
+import React, { useState } from "react";
+import {
+  AppBar,
+  Box,
+  Toolbar,
+  IconButton,
+  Typography,
+  Drawer,
+  List,
+  ListItem,
+  ListItemText,
+  Button,
+  useTheme,
+  useMediaQuery,
+} from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import Container from "@mui/material/Container";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import Tooltip from "@mui/material/Tooltip";
-import MenuItem from "@mui/material/MenuItem";
+import PersonIcon from "@mui/icons-material/Person";
+import { useNavigate, useLocation } from "react-router-dom";
+import theme from "../../../Theme/Theme";
+import CartDrawer from "../Card/Card";
 
-const pages = ["Products", "About", "Blog"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+const Navbar = () => {
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const muiTheme = useTheme();
+  const isMobile = useMediaQuery(muiTheme.breakpoints.down("md"));
+  const navigate = useNavigate();
+  const location = useLocation();
 
-function ResponsiveAppBar() {
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const navItems = [
+    { name: "Home", path: "/" },
+    { name: "Products", path: "/products" },
+    { name: "Categories", path: "/categories" },
+    { name: "Contact", path: "/contact" },
+  ];
 
-  const handleOpenNavMenu = (event) => {
-    setAnchorElNav(event.currentTarget);
-  };
-  const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
-  };
-
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
-  };
-
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
   };
 
-  return (
-    <AppBar position="sticky" >
-      <Container maxWidth="xl">
-        <Toolbar disableGutters>
-          <Typography
-            variant="h6"
-            noWrap
-            component="a"
-            href="/"
+  const drawer = (
+    <Box
+      onClick={handleDrawerToggle}
+      sx={{ textAlign: "center", bgcolor: theme.colors.primary.main }}
+    >
+      <Typography
+        variant="h6"
+        sx={{ my: 2, color: theme.colors.background.paper }}
+      >
+        BRAND NAME
+      </Typography>
+      <List>
+        {navItems.map((item) => (
+          <ListItem
+            key={item.name}
             sx={{
-              mr: 2,
-              display: { xs: "none", md: "flex" },
-              fontFamily: "monospace",
-              fontWeight: 700,
-              color: "inherit",
-              textDecoration: "none",
+              justifyContent: "center",
+              borderBottom:
+                location.pathname === item.path
+                  ? `3px solid ${theme.colors.background.paper}`
+                  : "3px solid transparent",
             }}
           >
-            WoodCraft
-          </Typography>
+            <ListItemText
+              primary={item.name}
+              sx={{
+                "& .MuiTypography-root": {
+                  fontSize: "1.1rem",
+                  fontWeight: 500,
+                  color: theme.colors.background.paper,
+                },
+              }}
+            />
+          </ListItem>
+        ))}
+      </List>
+    </Box>
+  );
 
-          <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
+  return (
+    <Box sx={{ flexGrow: 1 }}>
+      <AppBar
+        position="fixed"
+        sx={{
+          backgroundColor: theme.colors.primary.main,
+        }}
+      >
+        <Toolbar sx={{ justifyContent: "space-between" }}>
+          {isMobile && (
             <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-              color="inherit"
+              sx={{ color: theme.colors.background.paper }}
+              aria-label="open drawer"
+              edge="start"
+              onClick={handleDrawerToggle}
             >
               <MenuIcon />
             </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "left",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "left",
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-              sx={{ display: { xs: "block", md: "none" } }}
-            >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography sx={{ textAlign: "center" }}>{page}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
+          )}
+
           <Typography
             variant="h5"
-            noWrap
-            component="a"
-            href="/"
+            component="div"
             sx={{
-              mr: 2,
-              display: { xs: "flex", md: "none" },
-              flexGrow: 1,
-              fontFamily: "monospace",
+              flexGrow: isMobile ? 0 : 1,
+              color: theme.colors.background.paper,
               fontWeight: 700,
-              color: "inherit",
-              textDecoration: "none",
+              letterSpacing: ".5px",
             }}
           >
-            WoodCraft
+            BRAND NAME
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "white", display: "block" }}
-              >
-                {page}
-              </Button>
-            ))}
-          </Box>
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: "45px" }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography sx={{ textAlign: "center" }}>
-                    {setting}
-                  </Typography>
-                </MenuItem>
+
+          {!isMobile && (
+            <Box sx={{ display: "flex", gap: 4 }}>
+              {navItems.map((item) => (
+                <Button
+                  key={item.name}
+                  sx={{
+                    color: theme.colors.background.paper,
+                    fontSize: "1rem",
+                    textTransform: "none",
+                    borderBottom:
+                      location.pathname === item.path
+                        ? `3px solid ${theme.colors.background.paper}`
+                        : "3px solid transparent",
+                    borderRadius: 0,
+                    paddingBottom: "4px",
+                    transition: "all 0.3s ease",
+                    "&:hover": {
+                      color: theme.colors.primary.light,
+                      backgroundColor: "transparent",
+                    },
+                  }}
+                  onClick={() => navigate(item.path)}
+                >
+                  {item.name}
+                </Button>
               ))}
-            </Menu>
+            </Box>
+          )}
+
+          <Box sx={{ display: "flex", gap: 2 }}>
+            <CartDrawer />
+            <IconButton sx={{ color: theme.colors.background.paper }}>
+              <PersonIcon />
+            </IconButton>
           </Box>
         </Toolbar>
-      </Container>
-    </AppBar>
+      </AppBar>
+
+      <Box component="nav">
+        <Drawer
+          variant="temporary"
+          anchor="left"
+          open={mobileOpen}
+          onClose={handleDrawerToggle}
+          ModalProps={{
+            keepMounted: true,
+          }}
+          sx={{
+            "& .MuiDrawer-paper": {
+              boxSizing: "border-box",
+              width: 240,
+              bgcolor: theme.colors.primary.main,
+            },
+          }}
+        >
+          {drawer}
+        </Drawer>
+      </Box>
+      <Toolbar />
+    </Box>
   );
-}
-export default ResponsiveAppBar;
+};
+
+export default Navbar;

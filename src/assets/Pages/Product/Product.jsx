@@ -10,44 +10,58 @@ import {
   Divider,
   Stack,
   Chip,
+  Rating as MUIRating,
 } from "@mui/material";
+import StarIcon from "@mui/icons-material/Star";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import VerifiedIcon from "@mui/icons-material/Verified";
 import axiosInstance from "../../axiosConfig/axiosConfig";
+import theme from "../../../Theme/Theme";
+import { useCart } from "../../../context/CartContext";
 
-const theme = {
-  colors: {
-    primary: {
-      main: "#1976d2",
-      dark: "#1565c0",
-      light: "#2196F3",
-    },
-    text: {
-      primary: "#2c3e50",
-      secondary: "#555555",
-    },
-    background: {
-      paper: "#ffffff",
-      default: "#f8f9fa",
-    },
-    shadow: "rgba(0,0,0,0.15)",
-  },
-};
+
 
 export default function ProductDetails() {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
-
+  const [userRating, setUserRating] = useState(0);
+  const [hover, setHover] = useState(-1);
+const { addToCart } = useCart();
   useEffect(() => {
       axiosInstance.get(`/products/${id}`)
         .then((response) => {
-            setProduct(response.data);
+          console.log("Product data:", response.data.product);
+            setProduct(response.data.product);
         })
         .catch((error) => {
             console.error("Error fetching product:", error);
         });
   }, [id]);
+const handleRatingSubmit = (newValue) => {
+  setUserRating(newValue);
+  axiosInstance
+    .patch(`/products/${id}/rating`, {
+      rating: newValue,
+    })
+    .then((response) => {
+      setProduct(response.data.product);
+      console.log("Rating submitted successfully");
+    })
+    .catch((error) => {
+      console.error("Error submitting rating:", error);
+    });
+  };
+   const handleAddToCart = () => {
+     const cartItem = {
+       id: product.id,
+       title: product.title,
+       price: product.price,
+       image: product.image,
+     };
+     addToCart(cartItem);
+   };
+
 
   if (!product) return null;
 
@@ -97,12 +111,12 @@ export default function ProductDetails() {
               </Typography>
 
               <Box sx={{ display: "flex", alignItems: "center", mb: 3 }}>
-                <Rating value={4.5} precision={0.5} readOnly />
+                <Rating value={product.rating} precision={0.5} readOnly />
                 <Typography
                   variant="body1"
                   sx={{ ml: 1, color: theme.colors.text.secondary }}
                 >
-                  (4.5 / 5)
+                  ({product.rating} / 5)
                 </Typography>
               </Box>
 
@@ -132,6 +146,7 @@ export default function ProductDetails() {
                 variant="contained"
                 size="large"
                 startIcon={<ShoppingCartIcon />}
+                onClick={handleAddToCart}
                 sx={{
                   py: 2,
                   px: 4,
@@ -152,7 +167,7 @@ export default function ProductDetails() {
                   <LocalShippingIcon
                     sx={{ color: theme.colors.primary.main, mr: 2 }}
                   />
-                  <Typography>Free Delivery</Typography>
+                  <Typography>{product.delivery} Delivery</Typography>
                 </Box>
                 <Box sx={{ display: "flex", alignItems: "center" }}>
                   <VerifiedIcon
@@ -176,10 +191,10 @@ export default function ProductDetails() {
                 </Typography>
                 <Grid container spacing={2}>
                   {[
-                    { label: "Material", value: "Solid Wood" },
-                    { label: "Dimensions", value: "120 x 80 x 75 cm" },
-                    { label: "Weight", value: "25 kg" },
-                    { label: "Finish", value: "Natural Wood" },
+                    { label: "Material", value: product.material },
+                    { label: "Dimensions", value: product.dimensions },
+                    { label: "Weight", value: product.weight },
+                    { label: "Finish", value: product.finish },
                   ].map((spec, index) => (
                     <Grid item xs={6} key={index}>
                       <Typography
@@ -197,6 +212,41 @@ export default function ProductDetails() {
           </Grid>
         </Grid>
       </Container>
+      <Box sx={{ mb: 4 }}>
+        <Typography
+          variant="h6"
+          sx={{ mb: 2, color: theme.colors.text.primary }}
+        >
+          Rate this Product
+        </Typography>
+        <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+          <MUIRating
+            value={userRating}
+            precision={0.5}
+            onChange={(event, newValue) => {
+              handleRatingSubmit(newValue);
+            }}
+            onChangeActive={(event, newHover) => {
+              setHover(newHover);
+            }}
+            emptyIcon={
+              <StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />
+            }
+            sx={{
+              fontSize: "2rem",
+              color: theme.colors.primary.main,
+            }}
+          />
+          <Typography
+            variant="body1"
+            sx={{ color: theme.colors.text.secondary }}
+          >
+            {userRating > 0
+              ? `Your rating: ${userRating}/5`
+              : "Rate this product"}
+          </Typography>
+        </Box>
+      </Box>
     </Box>
   );
 }

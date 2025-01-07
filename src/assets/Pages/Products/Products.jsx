@@ -10,28 +10,14 @@ import {
   Box,
   Rating,
   Chip,
-  IconButton,
 } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import FavoriteIcon from "@mui/icons-material/Favorite";
 import axiosInstance from "../../axiosConfig/axiosConfig";
-
-const theme = {
-  colors: {
-    primary: {
-      main: "#1976d2",
-      dark: "#1565c0",
-      light: "#2196F3",
-    },
-    text: {
-      primary: "#2c3e50",
-      secondary: "#555555",
-    },
-    shadow: "rgba(0,0,0,0.15)",
-  },
-};
+import { useNavigate } from "react-router-dom";
+import theme from "../../../Theme/Theme";
 
 export default function Products() {
+  const navigate = useNavigate();
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
@@ -151,9 +137,6 @@ export default function Products() {
                       ${product.price}
                     </Typography>
                     <Box>
-                      <IconButton size="small" sx={{ mr: 1 }}>
-                        <FavoriteIcon />
-                      </IconButton>
                       <Button
                         variant="contained"
                         startIcon={<ShoppingCartIcon />}
@@ -163,8 +146,9 @@ export default function Products() {
                             bgcolor: theme.colors.primary.dark,
                           },
                         }}
+                        onClick={() => navigate(`/products/${product._id}`)}
                       >
-                        Add to Cart
+                        buy
                       </Button>
                     </Box>
                   </Box>

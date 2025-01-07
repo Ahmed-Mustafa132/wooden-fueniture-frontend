@@ -5,5 +5,5 @@
     box-sizing: border-box;
     font-family: "Lato", serif;
     font-style: normal;
-    animation: all linear 0.5s; 
+    transition: all linear 0.3s; 
 }
