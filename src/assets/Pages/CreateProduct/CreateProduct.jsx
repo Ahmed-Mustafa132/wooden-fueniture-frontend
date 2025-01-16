@@ -1,4 +1,4 @@
-import  { useState } from "react";
+import { useState } from "react";
 import {
   Container,
   Typography,
@@ -25,6 +25,7 @@ const CreateProduct = () => {
     price: "",
     category: "",
     image: "",
+    imageFile: null,
     stockQuantity: "",
     material: "",
     dimensions: "",
@@ -49,41 +50,60 @@ const CreateProduct = () => {
     });
   };
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  const formattedData = {
-    ...formData,
-    price: Number(formData.price),
-    stockQuantity: Number(formData.stockQuantity),
-  };
-console.log(formattedData);
-  try {
-    const response = await axiosInstance.post("/products", formattedData);
-    if (response.status === 201 || response.status === 200) {
-      alert("Product created successfully!");
-      setFormData({
-        title: "",
-        description: "",
-        price: "",
-        category: "",
-        image: "",
-        stockQuantity: "",
-        material: "",
-        dimensions: "",
-        weight: "",
-        finish: "",
-        warranty: "",
-        delivery: "",
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const formDataToSend = new FormData();
+
+    // إضافة الصورة كملف
+    formDataToSend.append("image", formData.imageFile);
+
+    // إضافة باقي البيانات
+    formDataToSend.append("title", formData.title);
+    formDataToSend.append("description", formData.description);
+    formDataToSend.append("price", formData.price);
+    formDataToSend.append("category", formData.category);
+    formDataToSend.append("stockQuantity", formData.stockQuantity);
+    formDataToSend.append("material", formData.material);
+    formDataToSend.append("dimensions", formData.dimensions);
+    formDataToSend.append("weight", formData.weight);
+    formDataToSend.append("finish", formData.finish);
+    formDataToSend.append("warranty", formData.warranty);
+    formDataToSend.append("delivery", formData.delivery);
+
+    try {
+      const response = await axiosInstance.post("/products", formDataToSend, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       });
+
+      if (response.status === 201 || response.status === 200) {
+        alert("Product created successfully!");
+        setFormData({
+          title: "",
+          description: "",
+          price: "",
+          category: "",
+          image: "",
+          imageFile: null,
+          stockQuantity: "",
+          material: "",
+          dimensions: "",
+          weight: "",
+          finish: "",
+          warranty: "",
+          delivery: "",
+        });
+      }
+    } catch (error) {
+      console.error("Error creating product:", error);
+      const errorMessage =
+        error.response?.data?.error ||
+        error.message ||
+        "Error creating product";
+      alert("Failed to create product: " + errorMessage);
     }
-  } catch (error) {
-    console.error("Error creating product:", error);
-    alert(
-      "Failed to create product: " + error.response?.data?.error ||
-        "Unknown error"
-    );
-  }
-};
+  };
 
   return (
     <Container maxWidth="md">
@@ -105,7 +125,6 @@ console.log(formattedData);
                 variant="outlined"
               />
             </Grid>
-
             <Grid item xs={12}>
               <TextField
                 fullWidth
@@ -119,7 +138,6 @@ console.log(formattedData);
                 variant="outlined"
               />
             </Grid>
-
             <Grid item xs={12} sm={6}>
               <TextField
                 fullWidth
@@ -135,7 +153,6 @@ console.log(formattedData);
                 }}
               />
             </Grid>
-
             <Grid item xs={12} sm={6}>
               <TextField
                 fullWidth
@@ -153,18 +170,6 @@ console.log(formattedData);
                   </MenuItem>
                 ))}
               </TextField>
-            </Grid>
-
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                required
-                label="Image URL"
-                name="image"
-                value={formData.image}
-                onChange={handleInputChange}
-                variant="outlined"
-              />
             </Grid>
 
             <Grid item xs={12}>
@@ -201,7 +206,6 @@ console.log(formattedData);
                 placeholder="material used"
               />
             </Grid>
-
             <Grid item xs={12} sm={6}>
               <TextField
                 fullWidth
@@ -214,7 +218,6 @@ console.log(formattedData);
                 placeholder="Weight in kg"
               />
             </Grid>
-
             <Grid item xs={12} sm={6}>
               <TextField
                 fullWidth
@@ -226,7 +229,6 @@ console.log(formattedData);
                 placeholder="Material finish/color"
               />
             </Grid>
-
             <Grid item xs={12} sm={6}>
               <TextField
                 fullWidth
@@ -238,7 +240,6 @@ console.log(formattedData);
                 placeholder="Warranty period"
               />
             </Grid>
-
             <Grid item xs={12} sm={6}>
               <TextField
                 fullWidth
@@ -250,7 +251,41 @@ console.log(formattedData);
                 placeholder="Estimated delivery time"
               />
             </Grid>
-
+            <Grid item xs={12}>
+              <input
+                accept="image/*"
+                style={{ display: "none" }}
+                id="image-upload"
+                type="file"
+                onChange={(e) => {
+                  const file = e.target.files[0];
+                  setFormData({
+                    ...formData,
+                    imageFile: file,
+                    image: URL.createObjectURL(file),
+                  });
+                }}
+              />
+              <label htmlFor="image-upload">
+                <Button
+                  variant="contained"
+                  component="span"
+                  fullWidth
+                  sx={{ mb: 2 }}
+                >
+                  Upload Product Image
+                </Button>
+              </label>
+              {formData.image && (
+                <Box sx={{ mt: 2, textAlign: "center" }}>
+                  <img
+                    src={formData.image}
+                    alt="Product preview"
+                    style={{ maxWidth: "200px", maxHeight: "200px" }}
+                  />
+                </Box>
+              )}
+            </Grid>
             <Grid item xs={12}>
               <Button
                 type="submit"

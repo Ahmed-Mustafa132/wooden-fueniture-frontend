@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   AppBar,
   Box,
@@ -18,20 +18,47 @@ import PersonIcon from "@mui/icons-material/Person";
 import { useNavigate, useLocation } from "react-router-dom";
 import theme from "../../../Theme/Theme";
 import CartDrawer from "../Card/Card";
+import { useAuth } from "../../../context/AuthContext";
 
 const Navbar = () => {
-  const [mobileOpen, setMobileOpen] = useState(false);
   const muiTheme = useTheme();
   const isMobile = useMediaQuery(muiTheme.breakpoints.down("md"));
+  const { isLoggedIn, userData, logout } = useAuth();
+  const [mobileOpen, setMobileOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
-  const navItems = [
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    const user = localStorage.getItem('userData');
+    
+    if (token && user && user !== 'undefined') {
+      setIsLoggedIn(true);
+      try {
+        const parsedUser = JSON.parse(user);
+        setUserData(parsedUser);
+      } catch {
+        // If parsing fails, clear invalid data
+        localStorage.removeItem('userData');
+        localStorage.removeItem('token');
+      }
+    }
+  }, []);
+  const handleLogout = () => {
+    logout();
+    navigate("/");
+  };
+
+
+  const baseNavItems = [
     { name: "Home", path: "/" },
     { name: "Products", path: "/products" },
-    { name: "Categories", path: "/categories" },
     { name: "Contact", path: "/contact" },
   ];
+
+  const navItems = isLoggedIn
+    ? [...baseNavItems, { name: "Dashboard", path: "/dashboard" }]
+    : baseNavItems;
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -59,6 +86,7 @@ const Navbar = () => {
                   ? `3px solid ${theme.colors.background.paper}`
                   : "3px solid transparent",
             }}
+            onClick={() => navigate(item.path)}
           >
             <ListItemText
               primary={item.name}
@@ -73,6 +101,32 @@ const Navbar = () => {
           </ListItem>
         ))}
       </List>
+    </Box>
+  );
+
+  const userSection = (
+    <Box sx={{ display: "flex", gap: 2 }}>
+      <CartDrawer />
+      {isLoggedIn ? (
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          <Typography sx={{ color: theme.colors.background.paper, mr: 1 }}>
+            {userData?.name}
+          </Typography>
+          <IconButton
+            sx={{ color: theme.colors.background.paper }}
+            onClick={handleLogout}
+          >
+            <PersonIcon />
+          </IconButton>
+        </Box>
+      ) : (
+        <IconButton
+          sx={{ color: theme.colors.background.paper }}
+          onClick={() => navigate("/login")}
+        >
+          <PersonIcon />
+        </IconButton>
+      )}
     </Box>
   );
 
@@ -138,12 +192,7 @@ const Navbar = () => {
             </Box>
           )}
 
-          <Box sx={{ display: "flex", gap: 2 }}>
-            <CartDrawer />
-            <IconButton sx={{ color: theme.colors.background.paper }}>
-              <PersonIcon />
-            </IconButton>
-          </Box>
+          {userSection}
         </Toolbar>
       </AppBar>
 
