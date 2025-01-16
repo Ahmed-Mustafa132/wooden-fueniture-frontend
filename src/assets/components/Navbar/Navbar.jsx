@@ -18,7 +18,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import { useNavigate, useLocation } from "react-router-dom";
 import theme from "../../../Theme/Theme";
 import CartDrawer from "../Card/Card";
-import { useAuth } from "../../../Context/AuthContext";
+import { useAuth } from "../.././Context/AuthContext";
 
 const Navbar = () => {
   const muiTheme = useTheme();
