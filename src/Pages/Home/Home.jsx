@@ -11,9 +11,9 @@ import {
 } from "@mui/material";
 import Header from "../../components/Header/Header";
 import NewProducts from "../../components/NewProducts/NewProducts";
-import theme from "../../../Theme/Theme";
+import theme from "../../Theme/Theme";
 import { useNavigate } from "react-router-dom";
-import Image from "../../Images/AboutmeImg.jpg";
+import Img from "../../assets/AboutmeImg.jpg";
 
 
 export default function Home() {
@@ -44,7 +44,7 @@ const navigate = useNavigate();
                 <CardMedia
                   component="img"
                   height="450"
-                  image={Image}
+                  image={Img}
                   alt="Woodworking"
                   sx={{
                     borderRadius: 2,

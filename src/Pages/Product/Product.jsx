@@ -17,8 +17,8 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import VerifiedIcon from "@mui/icons-material/Verified";
 import axiosInstance from "../../axiosConfig/axiosConfig";
-import theme from "../../../Theme/Theme";
-import { useCart } from "../../../Context/CartContext";
+import theme from "../../Theme/Theme";
+import { useCart } from "../../Context/CartContext";
 
 
 
@@ -31,6 +31,7 @@ const { addToCart } = useCart();
   useEffect(() => {
       axiosInstance.get(`/products/${id}`)
         .then((response) => {
+          console.log("Product data:", response.data.product);
             setProduct(response.data.product);
         })
         .catch((error) => {
@@ -53,7 +54,7 @@ const handleRatingSubmit = (newValue) => {
   };
    const handleAddToCart = () => {
      const cartItem = {
-       id: product._id,
+       id: product.id,
        title: product.title,
        price: product.price,
        image: product.image,

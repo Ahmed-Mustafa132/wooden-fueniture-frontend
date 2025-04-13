@@ -6,36 +6,38 @@ import {
   Card,
   CardContent,
   CardMedia,
-  Button,Box
+  Button,
+  Box,
 } from "@mui/material";
 import axiosInstance from "../../axiosConfig/axiosConfig";
 import { useNavigate } from "react-router-dom";
-import theme from "../../../Theme/Theme";
+import theme from "../../Theme/Theme";
 
 export default function NewProducts() {
-    const navigate = useNavigate();
-    const [products, setProducts] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    useEffect(() => {
-        axiosInstance.get("/products")
-            .then((res) => {
-                console.log(res.data.products)
-                setProducts(res.data.products);
-                setLoading(false);
-            })
-            .catch((error) => {
-                console.error("Error fetching products:", error);
-                setError(error);
-                setLoading(false);
-            });
-    }, []);
-    if (loading) {
-        return <div>Loading...</div>;
-    }
-    if (error) {
-        return <div>Error: {error.message}</div>;
-    }
+  const navigate = useNavigate();
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  useEffect(() => {
+    axiosInstance
+      .get("/products")
+      .then((res) => {
+        console.log(res.data.products);
+        setProducts(res.data.products);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error fetching products:", error);
+        setError(error);
+        setLoading(false);
+      });
+  }, []);
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
   return (
     <section className="section2">
       <Container>
@@ -74,29 +76,35 @@ export default function NewProducts() {
                     sx={{ color: theme.colors.text.primary }}
                   >
                     {product.title}
-                          </Typography>
-                          <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" ,padding: " 0 20px" }}>
-                              
-                  <Typography
-                    variant="h6"
-                    sx={{ color: theme.colors.primary.main }}
-                    >
-                    ${product.price}
                   </Typography>
-                  <Button
-                    variant="contained"
-                    onClick={() => navigate("/products/" + product._id)}
+                  <Box
                     sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      padding: " 0 20px",
+                    }}
+                  >
+                    <Typography
+                      variant="h6"
+                      sx={{ color: theme.colors.primary.main }}
+                    >
+                      ${product.price}
+                    </Typography>
+                    <Button
+                      variant="contained"
+                      onClick={() => navigate("/products/" + product._id)}
+                      sx={{
                         backgroundColor: theme.colors.primary.main,
                         "&:hover": {
-                            backgroundColor: theme.colors.primary.dark,
+                          backgroundColor: theme.colors.primary.dark,
                         },
                         mt: 2,
-                    }}
+                      }}
                     >
-                    let's buy
-                  </Button>
-                      </Box>
+                      let's buy
+                    </Button>
+                  </Box>
                 </CardContent>
               </Card>
             </Grid>

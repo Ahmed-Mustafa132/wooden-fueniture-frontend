@@ -6,13 +6,14 @@ export default function Header() {
   return (
     <header className={style.header}>
       <div className={style.headerContent}>
-        <h1 className={style.head}>Wooden Craft </h1>
+        <h1 className={style.head}>wooden Craft </h1>
         <p className={style.para}>
           Lorem ipsum dolor sit amet consectetur, adipisicing elit. Minima
           suscipit illum quaerat culpa maiores fugiat repellat, saepe commodi
         </p>
         <button onClick={() => navigate("/products")}> let&#39; s buy</button>
       </div>
+
     </header>
   );
 }

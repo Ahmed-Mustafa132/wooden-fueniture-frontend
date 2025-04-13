@@ -14,7 +14,7 @@ import {
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import axiosInstance from "../../axiosConfig/axiosConfig";
 import { useNavigate } from "react-router-dom";
-import theme from "../../../Theme/Theme";
+import theme from "../../Theme/Theme";
 
 export default function Products() {
   const navigate = useNavigate();
@@ -25,6 +25,7 @@ export default function Products() {
     
     axiosInstance.get("/products")
       .then((response) => {
+      console.log(response.data.products);
         setProducts(response.data.products);
       })
       .catch((error) => {

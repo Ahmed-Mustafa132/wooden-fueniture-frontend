@@ -16,9 +16,9 @@ import {
 import MenuIcon from "@mui/icons-material/Menu";
 import PersonIcon from "@mui/icons-material/Person";
 import { useNavigate, useLocation } from "react-router-dom";
-import theme from "../../../Theme/Theme";
+import theme from "../../Theme/Theme";
 import CartDrawer from "../Card/Card";
-import { useAuth } from "../../../context/AuthContext";
+import { useAuth } from "../../Context/AuthContext";
 
 const Navbar = () => {
   const muiTheme = useTheme();
@@ -73,7 +73,7 @@ const Navbar = () => {
         variant="h6"
         sx={{ my: 2, color: theme.colors.background.paper }}
       >
-        Wooden Craft
+        BRAND NAME
       </Typography>
       <List>
         {navItems.map((item) => (
@@ -160,7 +160,7 @@ const Navbar = () => {
               letterSpacing: ".5px",
             }}
           >
-            Wooden Craft
+            BRAND NAME
           </Typography>
 
           {!isMobile && (

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import {
   Box,
   Typography,
@@ -15,10 +15,9 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
-import theme from "../../../Theme/Theme";
-import { useCart } from "../../../Context/CartContext";
+import theme from "../../Theme/Theme";
+import { useCart } from "../../Context/CartContext";
 import { useNavigate } from "react-router-dom";
-
 const CartDrawer = () => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
@@ -28,6 +27,7 @@ const CartDrawer = () => {
     (sum, item) => sum + item.price * item.quantity,
     0
   );
+
 
   return (
     <>
@@ -113,9 +113,7 @@ const CartDrawer = () => {
                   bgcolor: theme.colors.primary.dark,
                 },
               }}
-              onClick={() => {
-                navigate("/checkout");
-              }}
+              onClick={() => navigate("/checkout")}
             >
               Checkout
             </Button>

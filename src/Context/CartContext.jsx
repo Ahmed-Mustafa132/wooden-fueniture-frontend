@@ -4,7 +4,7 @@ const CartContext = createContext();
 
 export function CartProvider({ children }) {
   const [cartItems, setCartItems] = useState([]);
-
+  
   const addToCart = (product) => {
     const existingItem = cartItems.find((item) => item.id === product.id);
     if (existingItem) {
@@ -23,7 +23,7 @@ export function CartProvider({ children }) {
   const removeFromCart = (productId) => {
     setCartItems(cartItems.filter((item) => item.id !== productId));
   };
-
+  
   const updateQuantity = (productId, change) => {
     setCartItems(
       cartItems.map((item) => {
@@ -35,10 +35,14 @@ export function CartProvider({ children }) {
       })
     );
   };
-
+  const clearCart = () => {
+    setCartItems([]);
+  };
+  
+  // console.log(cartItems);
   return (
     <CartContext.Provider
-      value={{ cartItems, addToCart, removeFromCart, updateQuantity }}
+      value={{ cartItems, addToCart, removeFromCart, updateQuantity , clearCart}}
     >
       {children}
     </CartContext.Provider>

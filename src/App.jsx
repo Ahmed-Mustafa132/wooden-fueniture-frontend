@@ -13,7 +13,10 @@ import Footer from "./assets/components/Footer/Footer";
 import Aboutme from "./assets/Pages/Aboutme/Aboutme";
 import Contact from "./assets/Pages/Contact/Contact";
 import Error from "./assets/Pages/Error/Error";
-import Dashbord from "./assets/Pages/Dashboard/Dashbord";
+import Dashboard from "./assets/Pages/Dashboard/Dashbord";
+import DashboardProducts from "./assets/Pages/Dashboard/DashboardProducts";
+import DashboardOrders from "./assets/Pages/Dashboard/OrdersDashboard";
+import Checkout from "./assets/Pages/Checkout/Checkout";1
 
 function App() {
   return (
@@ -27,11 +30,21 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/products" element={<Products />} />
             <Route path="/products/:id" element={<Product />} />
-            <Route path="/create-product" element={<CreateProduct />} />
             <Route path="/aboutme" element={<Aboutme />} />
             <Route path="/contact" element={<Contact />} />
-            <Route path="/dashboard" element={<Dashbord />} />
-            <Route path="*" element={<Error/>} />
+            <Route path="/dashboard">
+              <Route index element={<Dashboard />} />
+              <Route path="CreateProduct" element={<CreateProduct />} />
+              <Route path="products" element={<DashboardProducts />} />
+              <Route path="orders" element={<DashboardOrders />} />
+              {/* 
+              <Route path="users" element={<DashboardUsers />} />
+              <Route path="categories" element={<DashboardCategories />} />
+              <Route path="reviews" element={<DashboardReviews />} />
+              <Route path="offers" element={<DashboardOffers />} /> */}
+            </Route>
+            <Route path="/checkout" element={<Checkout />} />
+            <Route path="*" element={<Error />} />
           </Routes>
           <Footer />
         </CartProvider>
