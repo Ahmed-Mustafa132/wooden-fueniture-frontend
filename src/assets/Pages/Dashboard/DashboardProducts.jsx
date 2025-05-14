@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import {Link} from "react-router-dom" 
 import {
   Box,
   Container,
@@ -45,6 +46,7 @@ export default function DashboardProducts() {
   };
 
   return (
+    
     <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
       <Box sx={{ mb: 4 }}>
         <Typography
@@ -71,16 +73,18 @@ export default function DashboardProducts() {
               ),
             }}
           />
-          <Button
-            variant="contained"
-            startIcon={<AddIcon />}
-            sx={{
-              backgroundColor: theme.colors.primary.main,
-              "&:hover": { backgroundColor: theme.colors.primary.dark },
-            }}
-          >
-            Add New Product
-          </Button>
+          <Link to="/dashboard/CreateProduct">
+            <Button
+              variant="contained"
+              startIcon={<AddIcon />}
+              sx={{
+                backgroundColor: theme.colors.primary.main,
+                "&:hover": { backgroundColor: theme.colors.primary.dark },
+              }}
+            >
+              Add New Product
+            </Button>
+          </Link>
         </Stack>
 
         <TableContainer component={Paper}>
@@ -89,7 +93,6 @@ export default function DashboardProducts() {
               <TableRow
                 sx={{ backgroundColor: theme.colors.background.default }}
               >
-                <TableCell>Product ID</TableCell>
                 <TableCell>Product Name</TableCell>
                 <TableCell>Category</TableCell>
                 <TableCell>Price</TableCell>
@@ -101,7 +104,6 @@ export default function DashboardProducts() {
             <TableBody>
               {products.map((product) => (
                 <TableRow key={product._id}>
-                  <TableCell>{product._id}</TableCell>
                   <TableCell>{product.title}</TableCell>
                   <TableCell>{product.category}</TableCell>
                   <TableCell>${product.price}</TableCell>
