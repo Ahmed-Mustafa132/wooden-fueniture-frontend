@@ -9,9 +9,10 @@ import {
   Divider,
   Link,
 } from "@mui/material";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../axiosConfig/axiosConfig";
-import { useAuth } from '../../Context/AuthContext';
+import { useAuth } from '../../context/AuthContext';
 
 export default function Login() {
   const [isLogin, setIsLogin] = useState(true);
@@ -24,36 +25,29 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (isLogin) {
-      try {
-        
+    try {
+      if (isLogin) {
         const response = await axiosInstance.post("/users/login", {
           email,
           password,
         });
         login(response.data.token, response.data.user);
         navigate("/dashboard");
-      } catch (error) {
-        setError(error);
-        console.log({login: error});
-      }
-    } else {
-      try {
-        
+      } else {
         const response = await axiosInstance.post("/users/register", {
           name,
           email,
           password,
         });
-        console.log(response);
         setIsLogin(true);
-        setError(response.data.message);
-      } catch (error) {
-        setError(error.response.data.error);
-        console.log(error);
+        setError("Registration successful! Please login.");
+  
       }
+    } catch (err) {
+      setError(isLogin ? "Invalid email or password" : "Registration failed");
     }
-  }
+  };
+
   return (
     <Container component="main" maxWidth="xs">
       <Box
@@ -70,7 +64,7 @@ export default function Login() {
 
         {error && (
           <Alert
-            
+            severity={error.includes("successful") ? "success" : "error"}
             sx={{ mt: 2, width: "100%" }}
           >
             {error}

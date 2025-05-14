@@ -13,7 +13,7 @@ import Header from "../../components/Header/Header";
 import NewProducts from "../../components/NewProducts/NewProducts";
 import theme from "../../Theme/Theme";
 import { useNavigate } from "react-router-dom";
-import Img from "../../assets/AboutmeImg.jpg";
+import Image from "../../assets/Images/AboutmeImg.jpg";
 
 
 export default function Home() {
@@ -44,7 +44,7 @@ const navigate = useNavigate();
                 <CardMedia
                   component="img"
                   height="450"
-                  image={Img}
+                  image={Image}
                   alt="Woodworking"
                   sx={{
                     borderRadius: 2,

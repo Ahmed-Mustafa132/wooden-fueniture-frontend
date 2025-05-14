@@ -25,7 +25,6 @@ export default function Products() {
     
     axiosInstance.get("/products")
       .then((response) => {
-      console.log(response.data.products);
         setProducts(response.data.products);
       })
       .catch((error) => {

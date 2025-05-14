@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import  { useState, useEffect } from "react";
 import {Link} from "react-router-dom" 
 import {
   Box,
@@ -22,7 +22,7 @@ import {
   Add as AddIcon,
   Search as SearchIcon,
 } from "@mui/icons-material";
-import theme from "../../../Theme/Theme";
+import theme from "../../Theme/Theme";
 import axiosInstance from "../../axiosConfig/axiosConfig";
 
 export default function DashboardProducts() {

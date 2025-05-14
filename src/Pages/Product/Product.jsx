@@ -31,7 +31,6 @@ const { addToCart } = useCart();
   useEffect(() => {
       axiosInstance.get(`/products/${id}`)
         .then((response) => {
-          console.log("Product data:", response.data.product);
             setProduct(response.data.product);
         })
         .catch((error) => {
@@ -54,7 +53,7 @@ const handleRatingSubmit = (newValue) => {
   };
    const handleAddToCart = () => {
      const cartItem = {
-       id: product.id,
+       id: product._id,
        title: product.title,
        price: product.price,
        image: product.image,

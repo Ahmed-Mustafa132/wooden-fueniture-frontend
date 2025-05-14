@@ -2,21 +2,21 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
 import { CartProvider } from "./Context/CartContext";
 import { AuthProvider } from "./Context/AuthContext";
-import Navbar from "./assets/components/Navbar/Navbar";
-import Home from "./assets/Pages/Home/Home";
-import Login from "./assets/Pages/Login/Login";
-import Register from "./assets/Pages/Register/Register";
-import Products from "./assets/Pages/Products/Products";
-import Product from "./assets/Pages/Product/Product";
-import CreateProduct from "./assets/Pages/CreateProduct/CreateProduct";
-import Footer from "./assets/components/Footer/Footer";
-import Aboutme from "./assets/Pages/Aboutme/Aboutme";
-import Contact from "./assets/Pages/Contact/Contact";
-import Error from "./assets/Pages/Error/Error";
-import Dashboard from "./assets/Pages/Dashboard/Dashbord";
-import DashboardProducts from "./assets/Pages/Dashboard/DashboardProducts";
-import DashboardOrders from "./assets/Pages/Dashboard/OrdersDashboard";
-import Checkout from "./assets/Pages/Checkout/Checkout";1
+import Navbar from "./components/Navbar/Navbar";
+import Home from "./Pages/Home/Home";
+import Login from "./Pages/Login/Login";
+import Register from "./Pages/Register/Register";
+import Products from "./Pages/Products/Products";
+import Product from "./Pages/Product/Product";
+import CreateProduct from "./Pages/CreateProduct/CreateProduct";
+import Footer from "./components/Footer/Footer";
+import Aboutme from "./Pages/Aboutme/Aboutme";
+import Contact from "./Pages/Contact/Contact";
+import Error from "./Pages/Error/Error";
+import Dashboard from "./Pages/Dashboard/Dashbord";
+import DashboardProducts from "./Pages/Dashboard/DashboardProducts";
+import DashboardOrders from "./Pages/Dashboard/OrdersDashboard";
+import Checkout from "./Pages/Checkout/Checkout";1
 
 function App() {
   return (
