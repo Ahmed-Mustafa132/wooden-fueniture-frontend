@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import  { useEffect, useState } from "react";
 import {
   Box,
   Container,
@@ -15,42 +15,48 @@ import {
   People as PeopleIcon,
   ShoppingCart as OrdersIcon,
   Inventory as ProductsIcon,
-  Analytics as AnalyticsIcon,
-  Category as CategoryIcon,
-  Reviews as ReviewsIcon,
-  Discount as DiscountIcon,
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import theme from "../../Theme/Theme";
+import axiosInstance from "../../axiosConfig/axiosConfig";
 
 export default function Dashboard() {
+  const [data, setData] = useState("");
+  useEffect(() => {
+    axiosInstance.get("/orders/dashboard").then((res) => {
+      setData(res.data);
+      console.log(res.data)
+    }).catch((err) => {
+      console.log(err)
+    });
+  }, []);
   const navigate = useNavigate();
 
   const dashboardItems = [
     {
-      title: "المنتجات",
+      title: "Products",
       icon: <ProductsIcon sx={{ fontSize: 50 }} />,
-      description: "إدارة مخزون المنتجات الخشبية",
+      description: "Mange Your Storage  of Wooden Furniture ",
       action: () => navigate("/dashboard/products"),
       color: theme.colors.primary.main,
-      stats: "120 منتج",
+      stats: `${data.products} product`,
     },
     {
-      title: "الطلبات",
+      title: "Orders",
       icon: <OrdersIcon sx={{ fontSize: 50 }} />,
-      description: "متابعة وإدارة طلبات العملاء",
+      description: " fallow and mange your Orders    ",
       action: () => navigate("/dashboard/orders"),
       color: theme.colors.primary.dark,
-      stats: "25 طلب جديد",
+      stats: `${data.orders} orders`,
     },
     {
-      title: "المستخدمين",
+      title: "Users",
       icon: <PeopleIcon sx={{ fontSize: 50 }} />,
-      description: "إدارة حسابات العملاء",
+      description: "  mange your Users account",
       action: () => navigate("/dashboard/users"),
       color: theme.colors.primary.light,
-      stats: "500 مستخدم",
-    }
+      stats: `${data.users} users` ,
+    },
   ];
 
   return (
@@ -71,7 +77,7 @@ export default function Dashboard() {
           gutterBottom
           sx={{ color: theme.colors.text.primary }}
         >
-          لوحة التحكم
+          DashBoard
         </Typography>
         <Button
           variant="contained"
@@ -84,7 +90,7 @@ export default function Dashboard() {
             },
           }}
         >
-          إضافة منتج جديد
+          Add New Product
         </Button>
       </Box>
 
@@ -155,7 +161,7 @@ export default function Dashboard() {
                     },
                   }}
                 >
-                  عرض {item.title}
+                  view {item.title}
                 </Button>
               </CardActions>
             </Card>

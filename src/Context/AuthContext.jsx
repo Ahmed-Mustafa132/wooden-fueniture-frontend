@@ -4,25 +4,7 @@ const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [role, setrole] = useState(null);
   const [user, setUserData] = useState(null);
-
-  useEffect(() => {
-    // Check if the user is already logged in
-    
-    const token = localStorage.getItem('token');
-    const user = localStorage.getItem('userData');
-    
-    if (token && user) {
-      setIsLoggedIn(true);
-      try {
-        setUserData(JSON.parse(user));
-      } catch {
-        localStorage.removeItem('userData');
-        localStorage.removeItem('token');
-      }
-    }
-  }, []);
 
   const login = (token, user) => {
     localStorage.setItem('token', token);

@@ -13,7 +13,7 @@ import theme from "../../Theme/Theme";
 import { useCart } from "../../Context/CartContext";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../axiosConfig/axiosConfig";
-export default function Checkout() {
+  export default function Checkout() {
   const navigate = useNavigate();
   const { cartItems, clearCart } = useCart();
     const totalPrice = cartItems.reduce(
@@ -34,7 +34,8 @@ const [formData, setFormData] = React.useState({
   phone: "",
 });
 
-  const [errors, setErrors] = React.useState({});
+    const [errors, setErrors] = React.useState({});
+    const [error, setError] = React.useState();
 
   const validateForm = () => {
     const newErrors = {};
@@ -71,15 +72,24 @@ const [formData, setFormData] = React.useState({
       try {
         
         axiosInstance.post("/orders", formData).then(() => {
-          console.log("Order placed successfully:");
           clearCart();
           navigate("/");
         
-        });
+        }).catch((error) => {
+          if (error.response && error.response.data) {
+            setError(error.response.data.message || "Failed to place order. Please try again.");
+          } else if (error.request) {
+            setError("No response received from the server. Please check your network connection.");
+          }else if (error.message) {
+            setError(error.message);
+          }
+          console.error("Error placing order:", error);
+        })
       } catch (error) {
         console.error("Error placing order:", error);
+        setError("Failed to place order. Please try again.");
       }
-      };
+    }
   };
 
   const textFieldProps = {
@@ -108,13 +118,27 @@ const [formData, setFormData] = React.useState({
                 backgroundColor: theme.colors.background.paper,
                 boxShadow: `0 4px 6px ${theme.colors.shadow}`,
               }}
-            >
+              >
               <Typography
                 variant="h5"
                 sx={{ mb: 3, color: theme.colors.text.primary }}
-              >
+                >
                 Shipping Details
               </Typography>
+              {
+                error && (
+                  
+                  <Typography
+                  variant="body1"
+                  color="error"
+                  sx={{ mb: 2, textAlign: "center" }} 
+                  >
+                    {error}
+                  </Typography>
+          
+        )
+        }
+        
               <Grid container spacing={3}>
                 <Grid item xs={12}>
                   <TextField
@@ -252,6 +276,7 @@ const [formData, setFormData] = React.useState({
                     backgroundColor: theme.colors.primary.dark,
                   },
                 }}
+                onClick={()=>handleSubmit}
               >
                 Place Order
               </Button>

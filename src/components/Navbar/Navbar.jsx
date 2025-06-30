@@ -73,7 +73,7 @@ const Navbar = () => {
         variant="h6"
         sx={{ my: 2, color: theme.colors.background.paper }}
       >
-        BRAND NAME
+        Wooden Craft
       </Typography>
       <List>
         {navItems.map((item) => (
@@ -160,7 +160,7 @@ const Navbar = () => {
               letterSpacing: ".5px",
             }}
           >
-            BRAND NAME
+            Wooden Craft
           </Typography>
 
           {!isMobile && (
