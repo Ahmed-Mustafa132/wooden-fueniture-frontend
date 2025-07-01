@@ -2,18 +2,14 @@
   "version": 2,
   "builds": [
     {
-      "src": "package.json",
+      "src": "index.html",
       "use": "@vercel/static-build"
     }
   ],
   "routes": [
     {
-      "src": "/static/(.*)",
-      "dest": "/static/$1"
-    },
-    {
-      "src": "/favicon.ico",
-      "dest": "/favicon.ico"
+      "src": "/assets/(.*)",
+      "dest": "/assets/$1"
     },
     {
       "src": "/(.*)",
