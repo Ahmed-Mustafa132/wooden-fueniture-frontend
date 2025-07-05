@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   AppBar,
   Box,
@@ -23,42 +23,30 @@ import { useAuth } from "../../Context/AuthContext";
 const Navbar = () => {
   const muiTheme = useTheme();
   const isMobile = useMediaQuery(muiTheme.breakpoints.down("md"));
-  const { isLoggedIn, userData, logout } = useAuth();
+  const { isLoggedIn, logout } = useAuth();
   const [mobileOpen, setMobileOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    const user = localStorage.getItem('userData');
-    
-    if (token && user && user !== 'undefined') {
-      setIsLoggedIn(true);
-      try {
-        const parsedUser = JSON.parse(user);
-        setUserData(parsedUser);
-      } catch {
-        // If parsing fails, clear invalid data
-        localStorage.removeItem('userData');
-        localStorage.removeItem('token');
-      }
-    }
-  }, []);
   const handleLogout = () => {
     logout();
     navigate("/");
   };
-
 
   const baseNavItems = [
     { name: "Home", path: "/" },
     { name: "Products", path: "/products" },
     { name: "Contact", path: "/contact" },
   ];
+  const userData = JSON.parse(localStorage.getItem("userData"));
+  console.log(userData);
 
-  const navItems = isLoggedIn
-    ? [...baseNavItems, { name: "Dashboard", path: "/dashboard" }]
-    : baseNavItems;
+  const navItems =
+    userData?.role === "admin"
+      ? [...baseNavItems, { name: "Dashboard", path: "/dashboard" }]
+      : userData?.role === "user"
+      ? [...baseNavItems, { name: "Orders", path: "/order" }]
+      : baseNavItems;
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);

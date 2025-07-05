@@ -18,6 +18,7 @@ import DashboardProducts from "./Pages/Dashboard/DashboardProducts";
 import DashboardOrders from "./Pages/Dashboard/OrdersDashboard";
 import DashboardUsers from "./Pages/Dashboard/DashBoardUsers";
 import Checkout from "./Pages/Checkout/Checkout";
+import MyOrders from "./Pages/MyOrders/MyOrders";
 
 function App() {
   return (
@@ -45,6 +46,7 @@ function App() {
               <Route path="offers" element={<DashboardOffers />} /> */}
             </Route>
             <Route path="/checkout" element={<Checkout />} />
+            <Route path="/order" element={<MyOrders />} />
             <Route path="*" element={<Error />} />
           </Routes>
           <Footer />

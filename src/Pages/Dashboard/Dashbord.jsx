@@ -22,15 +22,16 @@ import axiosInstance from "../../axiosConfig/axiosConfig";
 
 export default function Dashboard() {
   const [data, setData] = useState("");
+  const navigate = useNavigate();
+
   useEffect(() => {
     axiosInstance.get("/orders/dashboard").then((res) => {
       setData(res.data);
-      console.log(res.data)
     }).catch((err) => {
-      console.log(err)
+      console.error("Error fetching dashboard data:");
+      navigate("/");
     });
   }, []);
-  const navigate = useNavigate();
 
   const dashboardItems = [
     {

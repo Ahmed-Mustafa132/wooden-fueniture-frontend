@@ -9,7 +9,6 @@ import {
   Divider,
   Link,
 } from "@mui/material";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../axiosConfig/axiosConfig";
 import { useAuth } from '../../Context/AuthContext';
@@ -32,7 +31,8 @@ export default function Login() {
           password,
         });
         login(response.data.token, response.data.user);
-        navigate("/dashboard");
+        navigate("/");
+        window.location.reload();
       } else {
         const response = await axiosInstance.post("/users/register", {
           name,

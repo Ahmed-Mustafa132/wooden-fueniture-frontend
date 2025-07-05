@@ -37,8 +37,10 @@ import {
   Visibility,
 } from "@mui/icons-material";
 import axiosInstance from "../../axiosConfig/axiosConfig";
+import { useNavigate } from "react-router-dom";
 
 const OrdersDashboard = () => {
+  const navigate = useNavigate();
   const [orders, setOrders] = useState([]);
   const [totalRevenue, setTotalRevenue] = useState(0);
   const [editDialog, setEditDialog] = useState({ open: false, order: null });
@@ -49,10 +51,14 @@ const OrdersDashboard = () => {
   const [newStatus, setNewStatus] = useState("");
 
   useEffect(() => {
-    fetchOrders();
+    if (!localStorage.getItem("userData")) {
+      navigate("/");
+    } else {
+      fetchOrders();
+    }
   }, []);
 
-  const fetchOrders = () => {
+  const fetchOrders = () => {    
     axiosInstance.get("/orders").then((response) => {
       setOrders(response.data.data.orders || []);
       setTotalRevenue(response.data.data.totalRevenue || 0);
